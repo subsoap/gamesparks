@@ -15,20 +15,28 @@ writeText("Availability: " .. tostring(isAvailable) .. "\n")
 end
 
 function init(self)
---Create GS Instance
-gs = createGS()
---Set the logger for debugging the Responses, Messages and Requests flowing in and out
-gs.setLogger(writeText)
---Set API Key
-gs.setApiKey("293711ZXWjA9")
---Set Secret
-gs.setApiSecret("DgnYnPUE2D0RetwKAy5XPUxxxN7pl36e")
---Set Credential
-gs.setApiCredential("device")
---Set availability callback function
-gs.setAvailabilityCallback(availabilityCallback)
---Connect to your game's backend
-gs.connect()
+	gs = createGS() --Create GS Instance
+	
+	--Set the logger for debugging the Responses, Messages and Requests flowing in and out
+	gs.setLogger(writeText)
+	
+	--Set API Key
+	gs.setApiKey("293711ZXWjA9")
+	
+	--Set Secret
+	gs.setApiSecret("DgnYnPUE2D0RetwKAy5XPUxxxN7pl36e")
+	
+	--Set Credential
+	gs.setApiCredential("device")
+	
+	--Set availability callback function
+	gs.setAvailabilityCallback(availabilityCallback)
+	
+	-- https://docs.gamesparks.com/getting-started/going-live-checklist/#pointing-to-live-in-corona-and-defold
+	--gs.setUseLiveServices(true)
+	
+	--Connect to your game's backend
+	gs.connect()
 end
 
 function final(self)

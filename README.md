@@ -11,7 +11,9 @@ https://github.com/britzl/defold-timer/archive/master.zip,https://github.com/son
 ## Usage
 For the usage see the [GameSparks documentation](https://docs.gamesparks.com) please.
 
-There are no documents specific for Defold currently, but most of the guides for Corona can be adapted for use with Defold.
+There are no documents specific for Defold currently, but most of the guides for Corona can be adapted for use with Defold. Look for the Lua versions too.
+
+https://docs.gamesparks.com/getting-started/
 
 ## Limitations
 This module is available for all platforms that are currently supported by [Native Extensions](http://www.defold.com/manuals/extensions/).

@@ -1,7 +1,7 @@
 [project]
 title = GameSparksSDK
 version = 0.9
-custom_resources = gamesparks/dmc_corona.cfg
+custom_resources = /gamesparks/dmc_corona.cfg
 dependencies = https://github.com/britzl/defold-timer/archive/master.zip,https://github.com/sonountaleban/defold-luasec/archive/master.zip,https://github.com/sonountaleban/defold-crypto/archive/master.zip,https://github.com/britzl/defold-luasocket/archive/master.zip
 
 [script]
