@@ -1,0 +1,57 @@
+local gs = require("gamesparks.gamesparks")
+
+local function writeText(string)
+  print(string)
+end
+  
+  
+local function availabilityCallback(isAvailable)
+writeText("Availability: " .. tostring(isAvailable) .. "\n")
+
+  if isAvailable then
+    --Do something
+  end
+
+end
+
+function init(self)
+--Create GS Instance
+gs = createGS()
+--Set the logger for debugging the Responses, Messages and Requests flowing in and out
+gs.setLogger(writeText)
+--Set API Key
+gs.setApiKey("293711ZXWjA9")
+--Set Secret
+gs.setApiSecret("DgnYnPUE2D0RetwKAy5XPUxxxN7pl36e")
+--Set Credential
+gs.setApiCredential("device")
+--Set availability callback function
+gs.setAvailabilityCallback(availabilityCallback)
+--Connect to your game's backend
+gs.connect()
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Remove this function if not needed
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Remove this function if not needed
+end

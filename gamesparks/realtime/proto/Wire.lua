@@ -1,0 +1,3 @@
+Wire = {VARINT = 0, FIXED64 = 1, LENGTH_DELIMITED = 2, FIXED32 = 5}
+
+return Wire
