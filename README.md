@@ -5,7 +5,7 @@ This is the GameSparks SDK for the [Defold game engine](http://www.defold.com).
 You can use the SDK in your own project by adding this project as a [Defold library dependency](http://www.defold.com/manuals/libraries/). Open your game.project file and in the dependencies field under project add:
 
 ```
-https://github.com/britzl/defold-timer/archive/master.zip,https://github.com/sonountaleban/defold-luasec/archive/master.zip,https://github.com/sonountaleban/defold-crypto/archive/master.zip,https://github.com/britzl/defold-luasocket/archive/master.zip
+https://github.com/subsoap/gamesparks/archive/master.zip,https://github.com/britzl/defold-timer/archive/master.zip,https://github.com/sonountaleban/defold-luasec/archive/master.zip,https://github.com/sonountaleban/defold-crypto/archive/master.zip,https://github.com/britzl/defold-luasocket/archive/master.zip
 ```
 
 ## Usage
