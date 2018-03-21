@@ -63,9 +63,11 @@ function PlayerConnectMessage.deserialize(stream, instance)
       if key.field == 0 then
         print("WARNING: " .. "Invalid field id: 0, something went wrong in the stream")
         
-        return nil
+        break
       else
-        ProtocolParser.skipKey(stream, key)
+        if ProtocolParser.skipKey(stream, key) ~= true then
+          break
+        end
       end
     end
   end

@@ -105,7 +105,7 @@ function ProtocolParser.readSingle(stream)
   
   val = bit.bor(bit.bor(bit.lshift(b[1], 24), bit.lshift(b[2], 16)), bit.bor(bit.lshift(b[3], 8), b[4]))
   
-  local negative = bit.band(val, 0x80000000) == 0x80000000
+  local negative = bit.band(b[1], 0x80) == 0x80
   local exponent = bit.arshift(bit.band(val, 0x7f800000), 23)    
   local sign
   
@@ -280,7 +280,7 @@ function ProtocolParser.readDouble(stream)
   valh = bit.bor(bit.bor(bit.lshift(b[1], 24), bit.lshift(b[2], 16)), bit.bor(bit.lshift(b[3], 8), b[4]))
   vall = bit.bor(bit.bor(bit.lshift(b[5], 24), bit.lshift(b[6], 16)), bit.bor(bit.lshift(b[7], 8), b[8]))
   
-  local negative = bit.band(valh, 0x80000000) == 0x80000000
+  local negative = bit.band(b[1], 0x80) == 0x80
   local exponent = bit.arshift(bit.band(valh, 0x7ff00000), 20)    
   local sign
   
@@ -428,7 +428,11 @@ function ProtocolParser.skipKey(stream, key)
     ProtocolParser.readSkipVarInt(stream)
   else
     print("WARNING: " .. "Unknown wire type: " .. key.wireType)
+
+    return false
   end
+
+  return true
 end
 
 return ProtocolParser

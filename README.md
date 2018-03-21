@@ -17,3 +17,6 @@ https://docs.gamesparks.com/getting-started/
 
 ## Limitations
 This module is available for all platforms that are currently supported by [Native Extensions](http://www.defold.com/manuals/extensions/).
+
+GameSparks vs PlayFab: Best Price? Trust? Features? Current+Future Value?
+https://www.youtube.com/watch?v=Vr8b3YFxnEI

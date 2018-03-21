@@ -108,7 +108,7 @@ function RTVal.deserializeLengthDelimited(stream)
       else
         print("WARNING: " .. "Read past max limit")
         
-        return 0
+        break
       end
     end
     
@@ -117,7 +117,7 @@ function RTVal.deserializeLengthDelimited(stream)
     if keyByte == -1 then
       print("WARNING: " .. "End of stream")
         
-      return 0
+      break
     end
     
     local continue = false
@@ -154,7 +154,7 @@ function RTVal.deserializeLengthDelimited(stream)
       if stream:getPosition() ~= end2 then
         print("WARNING: " .. "Read too many bytes in packed data")
         
-        return nil
+        break
       end
       
       continue = true
@@ -173,9 +173,11 @@ function RTVal.deserializeLengthDelimited(stream)
       if key.field == 0 then
         print("WARNING: " .. "Invalid field id: 0, something went wrong in the stream")
         
-        return nil
+        break
       else
-        ProtocolParser.skipKey(stream, key)
+        if ProtocolParser.skipKey(stream, key) ~= true then
+          break
+        end
       end
     end
   end

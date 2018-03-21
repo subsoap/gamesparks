@@ -1,18 +1,22 @@
 --PooledObjects = PooledObjects or require("gamesparks.realtime.pools.PooledObjects")
-local YaciCode12 = require("gamesparks.realtime.YaciCode12")
 --Stream = Stream or require("gamesparks.realtime.proto.Stream")
 
-PositionStream = newclass("PositionStream")
+local PositionStream = {}
+local PositionStream_mt = {__index = PositionStream}
 
---PooledObjects.positionStreamPool = ObjectPool.new(function()
---  return PositionStream:new()
---end, nil, 5)
-
-function PositionStream:init()
-  self.tempBuffer = {}
-  self.bytesRead = 0
-  self.stream = nil
+function PositionStream.new()
+  local instance = {}
+  
+  instance.tempBuffer = {}
+  instance.bytesRead = 0
+  instance.stream = nil
+  
+  return setmetatable(instance, PositionStream_mt)
 end
+
+PooledObjects.positionStreamPool = ObjectPool.new(function()
+  return PositionStream.new()
+end, nil, 5)
 
 function PositionStream:wrap(baseStream)
   self.bytesRead = 0

@@ -58,6 +58,18 @@ lib.getMessageHandler = function()
   return gs.getMessageHandler()
 end
 
+lib.getDeviceStats = function()
+	return gs.getDeviceStats()
+end
+
+lib.isAvailable = function()
+	return gs.isAvailable()
+end
+
+lib.isAuthenticated = function()
+	return gs.isAuthenticated()
+end
+
 lib.getRealTimeServices = function()
   return GSRT
 end

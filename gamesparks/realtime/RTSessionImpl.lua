@@ -22,7 +22,8 @@ function RTSessionImpl.new(connectToken, hostName, tcpPort, udpPort, listener)
   instance.ready = false
   instance.actionQueue = LinkedList.new()
   instance.connectState = GameSparksRT.connectState.DISCONNECTED
-  instance.mustConnnectBy = os.time()
+  instance.connectionAttempts = 1
+  instance.mustConnnectBy = runtime.getTimer()
   instance.reliableConnection = nil
   instance.fastConnection = nil
   instance.sequenceNumber = 0
@@ -84,24 +85,28 @@ function RTSessionImpl:submitAction(action)
 end
 
 function RTSessionImpl:checkConnection()
-  if self.connectState == GameSparksRT.connectState.DISCONNECTED then
-    self:log("IRTSession", GameSparksRT.logLevel.INFO, "Disconnected, trying to connect")
-    
-    self:setConnectState(GameSparksRT.connectState.CONNECTING)
-              
-    self:connectReliable()
-  elseif self.connectState == GameSparksRT.connectState.CONNECTING and os.time() > self.mustConnnectBy then
-    self:setConnectState(GameSparksRT.connectState.DISCONNECTED)
-    
-    self:log("IRTSession", GameSparksRT.logLevel.INFO, "Not connected in time, retrying")
+  if runtime.getTimer() > self.mustConnnectBy then
+    if self.connectState == GameSparksRT.connectState.DISCONNECTED then
+      self:log("IRTSession", GameSparksRT.logLevel.INFO, "Disconnected, trying to connect")
+      
+      self:setConnectState(GameSparksRT.connectState.CONNECTING)
+                
+      self:connectReliable()
 
-    if self.reliableConnection ~= nil then
-      self.reliableConnection:stopInternal()
-      self.reliableConnection = nil
-    end
-    if self.fastConnection ~= nil then
-      self.fastConnection:stopInternal()
-      self.fastConnection = nil
+      self.connectionAttempts = self.connectionAttempts + 1
+    elseif self.connectState == GameSparksRT.connectState.CONNECTING then
+      self:setConnectState(GameSparksRT.connectState.DISCONNECTED)
+      
+      self:log("IRTSession", GameSparksRT.logLevel.INFO, "Not connected in time, retrying")
+
+      if self.reliableConnection ~= nil then
+        self.reliableConnection:stopInternal()
+        self.reliableConnection = nil
+      end
+      if self.fastConnection ~= nil then
+        self.fastConnection:stopInternal()
+        self.fastConnection = nil
+      end
     end
   end
 end
@@ -112,6 +117,11 @@ function RTSessionImpl:setConnectState(value)
       self:log("IRTSession", GameSparksRT.logLevel.DEBUG, "State Change : from " .. self.connectState .. " to " .. value .. ", ActivePeers " .. table.getn(self.activePeers))
       
       self.connectState = value
+
+	  if self.connectState >= GameSparksRT.connectState.RELIABLE_ONLY then
+		self.mustConnnectBy = runtime.getTimer()
+        self.connectionAttempts = 0
+      end
     end
   end
 end
@@ -124,7 +134,7 @@ function RTSessionImpl:connectFast()
 end
 
 function RTSessionImpl:connectReliable()
-  self.mustConnnectBy = os.time() + GameSparksRT.TCP_CONNECT_TIMEOUT_SECONDS
+  self.mustConnnectBy = runtime.getTimer() + GameSparksRT.computeSleepPeriod(self.connectionAttempts) + GameSparksRT.handshakeOffset
   
   self.reliableConnection = ReliableConnection.new(self.hostName, self.tcpPort, self)
 end

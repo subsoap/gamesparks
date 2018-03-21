@@ -14,12 +14,12 @@ end
 
 setmetatable(IOSBuyGoodsRequest, {__index = GSRequest})
 
-function IOSBuyGoodsRequest:setTimeoutSeconds(timeoutSeconds)
-  if timeoutSeconds == nil then
-    timeoutSeconds = 10
+function IOSBuyGoodsRequest:setTimeoutMilliSeconds(timeoutMilliSeconds)
+  if timeoutMilliSeconds == nil or timeoutMilliSeconds <= 0 then
+    timeoutMilliSeconds = self.gs.requestTimeout
   end
   
-  self.timeoutSeconds = timeoutSeconds
+  self.timeoutMilliSeconds = timeoutMilliSeconds
 end
 
 function IOSBuyGoodsRequest:send(callback)

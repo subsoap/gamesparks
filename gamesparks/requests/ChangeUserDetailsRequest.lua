@@ -14,12 +14,12 @@ end
 
 setmetatable(ChangeUserDetailsRequest, {__index = GSRequest})
 
-function ChangeUserDetailsRequest:setTimeoutSeconds(timeoutSeconds)
-  if timeoutSeconds == nil then
-    timeoutSeconds = 10
+function ChangeUserDetailsRequest:setTimeoutMilliSeconds(timeoutMilliSeconds)
+  if timeoutMilliSeconds == nil or timeoutMilliSeconds <= 0 then
+    timeoutMilliSeconds = self.gs.requestTimeout
   end
   
-  self.timeoutSeconds = timeoutSeconds
+  self.timeoutMilliSeconds = timeoutMilliSeconds
 end
 
 function ChangeUserDetailsRequest:send(callback)

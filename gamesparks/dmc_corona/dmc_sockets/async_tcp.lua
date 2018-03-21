@@ -117,7 +117,11 @@ function ATCPSocket:__init__( params )
 
 	--== Create Properties ==--
 
-	self._timeout = 6000
+	if params.timeout == nil or params.timeout < 0 then
+		self._timeout = 60000
+	else
+		self._timeout = params.timeout
+	end
 
 	self.__coroutine_queue_active = false
 	self._coroutine_queue = {}
@@ -294,6 +298,8 @@ function ATCPSocket:connect( host, port, params )
 
 			self:_removeCoroutineFromQueue()
 			if self._onConnect then self._onConnect( evt ) end
+		else
+			self._timeout = 60000
 		end
 
 	end

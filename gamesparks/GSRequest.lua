@@ -12,11 +12,12 @@ function GSRequest.new(globalGS, data)
   
   instance.gs = globalGS
     
-  instance.timeoutSeconds = 5
+  instance.timeoutMilliSeconds = globalGS.requestTimeout
   instance.callback = nil
   instance.requestId = nil
   instance.durable = false
   instance.durableRetryTicks = 0
+  instance.durableAttempts = 0
   
   return setmetatable(instance, GSRequest_mt)
 end
@@ -48,7 +49,7 @@ local function deepCopy(request)
   
   newRequest.data = copy(request:getData())
   
-  newRequest.timeoutSeconds = request.timeoutSeconds
+  newRequest.timeoutMilliSeconds = request.timeoutMilliSeconds
   newRequest.callback = request.callback
   newRequest.durable = request.durable
   
@@ -85,8 +86,8 @@ function GSRequest:setDurable(durable)
   self.durable = durable
 end
   
-function GSRequest:getTimeoutSeconds()
-  return self.timeoutSeconds
+function GSRequest:getTimeoutMilliSeconds()
+  return self.timeoutMilliSeconds
 end
 
 return GSRequest

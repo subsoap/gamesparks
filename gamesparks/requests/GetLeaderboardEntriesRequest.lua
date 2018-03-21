@@ -14,12 +14,12 @@ end
 
 setmetatable(GetLeaderboardEntriesRequest, {__index = GSRequest})
 
-function GetLeaderboardEntriesRequest:setTimeoutSeconds(timeoutSeconds)
-  if timeoutSeconds == nil then
-    timeoutSeconds = 10
+function GetLeaderboardEntriesRequest:setTimeoutMilliSeconds(timeoutMilliSeconds)
+  if timeoutMilliSeconds == nil or timeoutMilliSeconds <= 0 then
+    timeoutMilliSeconds = self.gs.requestTimeout
   end
   
-  self.timeoutSeconds = timeoutSeconds
+  self.timeoutMilliSeconds = timeoutMilliSeconds
 end
 
 function GetLeaderboardEntriesRequest:send(callback)

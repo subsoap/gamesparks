@@ -27,7 +27,7 @@ function RTDataSerializer.readRTData(stream, instance)
       else
         print("WARNING: " .. "Read past max limit")
         
-        return nil
+        break
       end
     end
     
@@ -52,7 +52,7 @@ function RTDataSerializer.readRTData(stream, instance)
     if key.field == 0 then
       print("WARNING: " .. "Invalid field id: 0, something went wrong in the stream")
       
-      return nil
+      break
     end
   end
   

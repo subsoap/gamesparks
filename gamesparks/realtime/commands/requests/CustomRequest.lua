@@ -1,20 +1,24 @@
 RTRequest = RTRequest or require("gamesparks.realtime.commands.requests.RTRequest")
 PooledObjects = PooledObjects or require("gamesparks.realtime.pools.PooledObjects")
-YaciCode12 = YaciCode12 or require("gamesparks.realtime.YaciCode12")
 
-CustomRequest = newclass("CustomRequest", RTRequest)
+local CustomRequest = {}
+local CustomRequest_mt = {__index = CustomRequest}
 
 PooledObjects.customRequestPool = ObjectPool.new(function()
-  return CustomRequest:new()
+  return CustomRequest.new()
 end, function(cr)
   cr:reset()
 end, 5)
 
-function CustomRequest:init()
-  self.super:init()
+function CustomRequest.new()
+  local instance = RTRequest.new()
   
-  self.payload = nil
+  instance.payload = nil
+
+  return setmetatable(instance, CustomRequest_mt)
 end
+
+setmetatable(CustomRequest, {__index = RTRequest})
 
 function CustomRequest:configure(opCode, intent, payload, data, targetPlayers)
   self.opCode = opCode
@@ -60,7 +64,7 @@ end
 
 function CustomRequest:reset()
   self.payload = nil
-  self.super:reset()
+  RTRequest.reset(self)
 end
 
 return CustomRequest

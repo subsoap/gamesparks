@@ -11,9 +11,7 @@ local FastConnection_mt = {__index = FastConnection}
 function FastConnection.new(session)
   local instance = Connection.new(session)
   
-  instance.maxConnectAttempts = 20
-  instance.reconnectSleep = 0.2
-  instance.attempts = 0
+  instance.reconnectSleep = 100
   
   instance.client = Sockets:create(Sockets.UDP) 
   instance.remotehost = ""
@@ -35,19 +33,23 @@ end
 function FastConnection:udp_socket_event(event)
   local status = event.status
    
-  if event.type == self.client.CONNECT then
+  if self.client ~= nil and event.type == self.client.CONNECT then
     if status == self.client.CONNECTED then
-      self.session:log("FastConnection", GameSparksRT.logLevel.DEBUG, " UDP Socket Connected")
       --print( 'socket status:', status )
+
+      self.session:log("FastConnection", GameSparksRT.logLevel.DEBUG, " UDP Socket Connected")
       
       self.session:log("FastConnection", GameSparksRT.logLevel.DEBUG, " local=" .. self.client:getLocalHostName() .. " remote=" .. self.remotehost .. ":" .. self.remoteport)
   
       self:doLogin()
     else
-      self.session:log("FastConnection", GameSparksRT.logLevel.DEBUG, " UDP Socket Disconnected")
       --print( 'socket status:', status )
+
+      if self.session ~= nil then
+        self.session:log("FastConnection", GameSparksRT.logLevel.DEBUG, " UDP Socket Disconnected")
+      end
     end
-  elseif event.type == self.client.READ then
+  elseif self.client ~= nil and event.type == self.client.READ then
     --print( "=== UDP Data Available ===" )
     --print( 'socket status:', status )
     
@@ -60,7 +62,7 @@ function FastConnection:udp_socket_event(event)
 
     local data = self.client:receive()
     local read = event.bytes
-    local ms = Stream:new()
+    local ms = Stream.new()
     
     ms:writeChars(data, 0, #data)
         
@@ -94,16 +96,13 @@ function FastConnection:udp_socket_event(event)
 end
 
 function FastConnection:doLogin()
-  self.attempts = self.attempts + 1
-  
   if self.session ~= nil then
-    if self.attempts < self.maxConnectAttempts and self.session.connectState < GameSparksRT.connectState.RELIABLE_AND_FAST_SEND then
-      local loginCmd = LoginCommand:new(self.session.connectToken)
+    if self.session.connectState < GameSparksRT.connectState.RELIABLE_AND_FAST_SEND then
+      local loginCmd = LoginCommand.new(self.session.connectToken)
   
       self:send(loginCmd)    
         
-      --timer.performWithDelay(self.reconnectSleep, function() self:doLogin() end, 1)
-      timer.seconds(self.reconnectSleep, function() self:doLogin() end)
+      timer.seconds(self.reconnectSleep / 1000, function() self:doLogin() end)
     else
       self.session:onReady(true)
     end
@@ -140,8 +139,9 @@ end
 function FastConnection:stopInternal()
   if self.client ~= nil and self.client.status == self.client.CONNECTED then
     self.client:close()
-    self.client = nil
   end
+
+  self.client = nil
   
   self.session = nil
 end
