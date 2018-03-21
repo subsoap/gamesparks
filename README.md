@@ -2,6 +2,8 @@
 This is the GameSparks SDK for the [Defold game engine](http://www.defold.com).
 
 ## Installation
+Be aware initial build can take a while so be patient and let it do its work. After the first build for each target platform, every build after that should be fast.
+
 You can use the SDK in your own project by adding this project as a [Defold library dependency](http://www.defold.com/manuals/libraries/). Open your game.project file and in the dependencies field under project add:
 
 ```
