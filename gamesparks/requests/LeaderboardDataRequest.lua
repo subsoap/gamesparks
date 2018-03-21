@@ -14,12 +14,12 @@ end
 
 setmetatable(LeaderboardDataRequest, {__index = GSRequest})
 
-function LeaderboardDataRequest:setTimeoutSeconds(timeoutSeconds)
-  if timeoutSeconds == nil then
-    timeoutSeconds = 10
+function LeaderboardDataRequest:setTimeoutMilliSeconds(timeoutMilliSeconds)
+  if timeoutMilliSeconds == nil or timeoutMilliSeconds <= 0 then
+    timeoutMilliSeconds = self.gs.requestTimeout
   end
   
-  self.timeoutSeconds = timeoutSeconds
+  self.timeoutMilliSeconds = timeoutMilliSeconds
 end
 
 function LeaderboardDataRequest:send(callback)

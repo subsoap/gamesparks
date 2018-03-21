@@ -14,12 +14,12 @@ end
 
 setmetatable(LogChallengeEventRequest, {__index = GSRequest})
 
-function LogChallengeEventRequest:setTimeoutSeconds(timeoutSeconds)
-  if timeoutSeconds == nil then
-    timeoutSeconds = 10
+function LogChallengeEventRequest:setTimeoutMilliSeconds(timeoutMilliSeconds)
+  if timeoutMilliSeconds == nil or timeoutMilliSeconds <= 0 then
+    timeoutMilliSeconds = self.gs.requestTimeout
   end
   
-  self.timeoutSeconds = timeoutSeconds
+  self.timeoutMilliSeconds = timeoutMilliSeconds
 end
 
 function LogChallengeEventRequest:send(callback)

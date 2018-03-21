@@ -191,7 +191,7 @@ function Packet.deserializeLengthDelimited(stream, instance)
       else
         print("WARNING: " .. "Read past max limit")
         
-        return 0
+        break
       end
     end
     
@@ -201,7 +201,7 @@ function Packet.deserializeLengthDelimited(stream, instance)
     if keyByte == -1 then
       print("WARNING: " .. "End of stream")
         
-      return 0
+      break
     end
     
     local continue = false
@@ -246,9 +246,11 @@ function Packet.deserializeLengthDelimited(stream, instance)
       if key.field == 0 then
         print("WARNING: " .. "Invalid field id: 0, something went wrong in the stream")
         
-        return 0
+        break
       else
-        ProtocolParser.skipKey(stream, key)
+        if ProtocolParser.skipKey(stream, key) ~= true then
+          break
+        end
       end
     end
   end

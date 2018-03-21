@@ -14,12 +14,12 @@ end
 
 setmetatable(WindowsBuyGoodsRequest, {__index = GSRequest})
 
-function WindowsBuyGoodsRequest:setTimeoutSeconds(timeoutSeconds)
-  if timeoutSeconds == nil then
-    timeoutSeconds = 10
+function WindowsBuyGoodsRequest:setTimeoutMilliSeconds(timeoutMilliSeconds)
+  if timeoutMilliSeconds == nil or timeoutMilliSeconds <= 0 then
+    timeoutMilliSeconds = self.gs.requestTimeout
   end
   
-  self.timeoutSeconds = timeoutSeconds
+  self.timeoutMilliSeconds = timeoutMilliSeconds
 end
 
 function WindowsBuyGoodsRequest:send(callback)

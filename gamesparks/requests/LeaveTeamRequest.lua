@@ -14,12 +14,12 @@ end
 
 setmetatable(LeaveTeamRequest, {__index = GSRequest})
 
-function LeaveTeamRequest:setTimeoutSeconds(timeoutSeconds)
-  if timeoutSeconds == nil then
-    timeoutSeconds = 10
+function LeaveTeamRequest:setTimeoutMilliSeconds(timeoutMilliSeconds)
+  if timeoutMilliSeconds == nil or timeoutMilliSeconds <= 0 then
+    timeoutMilliSeconds = self.gs.requestTimeout
   end
   
-  self.timeoutSeconds = timeoutSeconds
+  self.timeoutMilliSeconds = timeoutMilliSeconds
 end
 
 function LeaveTeamRequest:send(callback)

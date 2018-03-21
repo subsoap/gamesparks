@@ -1,10 +1,13 @@
-YaciCode12 = YaciCode12 or require("gamesparks.realtime.YaciCode12")
+local Stream = {}
+local Stream_mt = {__index = Stream}
 
-Stream = newclass("Stream")
-
-function Stream:init()
-  self.buffer = ""
-  self.position = 0
+function Stream.new()
+  local instance = {}
+  
+  instance.buffer = ""
+  instance.position = 0
+  
+  return setmetatable(instance, Stream_mt)
 end
 
 function Stream:getPosition()

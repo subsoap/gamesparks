@@ -1,15 +1,19 @@
-YaciCode12 = YaciCode12 or require("gamesparks.realtime.YaciCode12")
 RTRequest = RTRequest or require("gamesparks.realtime.commands.requests.RTRequest")
 
-LoginCommand = newclass("LoginCommand", RTRequest)
+local LoginCommand = {}
+local LoginCommand_mt = {__index = LoginCommand}
 
-function LoginCommand:init(token)
-  self.super:init()
+function LoginCommand.new(token)
+  local instance = RTRequest.new()
   
-  self.opCode = 0
-  self.token = token
-  self.clientVersion = 2
+  instance.opCode = 0
+  instance.token = token
+  instance.clientVersion = 2
+
+  return setmetatable(instance, LoginCommand_mt)
 end
+
+setmetatable(LoginCommand, {__index = RTRequest})
 
 function LoginCommand:toPacket(session, fast)
   local p = PooledObjects.packetPool:pop()

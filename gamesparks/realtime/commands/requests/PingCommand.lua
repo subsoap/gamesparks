@@ -1,13 +1,17 @@
-YaciCode12 = YaciCode12 or require("gamesparks.realtime.YaciCode12")
 RTRequest = RTRequest or require("gamesparks.realtime.commands.requests.RTRequest")
 
-PingCommand = newclass("PingCommand", RTRequest)
+local PingCommand = {}
+local PingCommand_mt = {__index = PingCommand}
 
-function PingCommand:init()
-  self.super:init()
+function PingCommand.new()
+  local instance = RTRequest.new()
   
-  self.opCode = -2
+  instance.opCode = -2
+  
+  return setmetatable(instance, PingCommand_mt)
 end
+
+setmetatable(PingCommand, {__index = RTRequest})
 
 function PingCommand:toPacket(session, fast)
   local p = PooledObjects.packetPool:pop()

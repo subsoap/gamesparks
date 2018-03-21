@@ -14,12 +14,12 @@ end
 
 setmetatable(ListInviteFriendsRequest, {__index = GSRequest})
 
-function ListInviteFriendsRequest:setTimeoutSeconds(timeoutSeconds)
-  if timeoutSeconds == nil then
-    timeoutSeconds = 10
+function ListInviteFriendsRequest:setTimeoutMilliSeconds(timeoutMilliSeconds)
+  if timeoutMilliSeconds == nil or timeoutMilliSeconds <= 0 then
+    timeoutMilliSeconds = self.gs.requestTimeout
   end
   
-  self.timeoutSeconds = timeoutSeconds
+  self.timeoutMilliSeconds = timeoutMilliSeconds
 end
 
 function ListInviteFriendsRequest:send(callback)

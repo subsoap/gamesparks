@@ -276,6 +276,8 @@ function WebSocket:__init__( params )
 	self._query = params.query
 	self._protocols = params.protocols
 
+	self._timeout = params.timeout
+
 	self._auto_connect = params.auto_connect
 	self._auto_reconnect = params.auto_reconnect
 
@@ -874,7 +876,7 @@ function WebSocket:do_state_init( params )
 
 	Sockets.throttle = self._socket_throttle
 
-	socket = Sockets:create( Sockets.ATCP, {ssl_params=self._ssl_params} )
+	socket = Sockets:create( Sockets.ATCP, {timeout=self._timeout, ssl_params=self._ssl_params} )
 	socket.secure = (url_parts.scheme == 'wss') -- true/false
 	self._socket = socket
 

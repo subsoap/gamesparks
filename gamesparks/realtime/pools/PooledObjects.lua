@@ -6,7 +6,7 @@ PooledObjects = {}
 PooledObjects.packetPool = {}
 
 PooledObjects.memoryStreamPool = ObjectPool.new(function()
-  return Stream:new()
+  return Stream.new()
 end, function(stream)
   stream:setPosition(0)
 end, 5)

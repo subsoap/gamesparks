@@ -7,6 +7,7 @@ local GameSession_mt = {__index = GameSession}
 function GameSession.new(connectToken, host, port)
   local instance = {}
   
+  instance.ready = false
   instance.onPlayerConnectCB = nil
   instance.onPlayerDisconnectCB = nil
   instance.onReadyCB = nil
@@ -32,8 +33,10 @@ function GameSession.new(connectToken, host, port)
 end
 
 function GameSession:stop()
+  self.ready = false
   if self.session ~= nil then
     self.session:stop()
+    self.session = nil
   end
 end
 
@@ -57,6 +60,8 @@ end
 
 function GameSession:onPlayerDisconnect(peerId)
   self:log(" OnPlayerDisconnect:" .. peerId)
+
+  self.ready = false
   
   if self.onPlayerDisconnectCB ~= nil then
     self.onPlayerDisconnectCB(peerId)
@@ -65,6 +70,8 @@ end
 
 function GameSession:onReady(ready)
   self:log(" OnReady:" .. tostring(ready))
+
+  self.ready = ready
   
   if self.onReadyCB ~= nil then
     self.onReadyCB(ready)

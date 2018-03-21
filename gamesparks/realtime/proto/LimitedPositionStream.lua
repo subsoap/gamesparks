@@ -1,20 +1,25 @@
-YaciCode12 = YaciCode12 or require("gamesparks.realtime.YaciCode12")
 PositionStream = PositionStream or require("gamesparks.realtime.proto.PositionStream")
 PooledObjects = PooledObjects or require("gamesparks.realtime.pools.PooledObjects")
 
-LimitedPositionStream = newclass("LimitedPositionStream", PositionStream)
+local LimitedPositionStream = {}
+local LimitedPositionStream_mt = {__index = LimitedPositionStream}
 
-PooledObjects.limitedPositionStreamPool = ObjectPool.new(function()
-  return LimitedPositionStream:new()
-end, nil, 5)
+function LimitedPositionStream.new()
+  local instance = PositionStream.new()
 
-function LimitedPositionStream:init()
-  self.super:init()
-  self.limit = 0
+  instance.limit = 0
+
+  return setmetatable(instance, LimitedPositionStream_mt)
 end
 
+setmetatable(LimitedPositionStream, {__index = PositionStream})
+
+PooledObjects.limitedPositionStreamPool = ObjectPool.new(function()
+  return LimitedPositionStream.new()
+end, nil, 5)
+
 function LimitedPositionStream:wrap(baseStream, limit)
-  self.super:wrap(baseStream)
+  PositionStream.wrap(self, baseStream)
   
   self.limit = limit
 end
@@ -28,14 +33,14 @@ function LimitedPositionStream:read(buffer, offset, count)
     toRead = count
   end
   
-  return self.super:read(buffer, offset, toRead)
+  return PositionStream.read(self, buffer, offset, toRead)
 end
 
 function LimitedPositionStream:readByte()
   if self.bytesRead >= self.limit then
     return -1
   else
-    return self.super:readByte()
+    return PositionStream.readByte(self)
   end
 end
 

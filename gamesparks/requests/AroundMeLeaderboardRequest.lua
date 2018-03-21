@@ -14,12 +14,12 @@ end
 
 setmetatable(AroundMeLeaderboardRequest, {__index = GSRequest})
 
-function AroundMeLeaderboardRequest:setTimeoutSeconds(timeoutSeconds)
-  if timeoutSeconds == nil then
-    timeoutSeconds = 10
+function AroundMeLeaderboardRequest:setTimeoutMilliSeconds(timeoutMilliSeconds)
+  if timeoutMilliSeconds == nil or timeoutMilliSeconds <= 0 then
+    timeoutMilliSeconds = self.gs.requestTimeout
   end
   
-  self.timeoutSeconds = timeoutSeconds
+  self.timeoutMilliSeconds = timeoutMilliSeconds
 end
 
 function AroundMeLeaderboardRequest:send(callback)

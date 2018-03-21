@@ -48,6 +48,8 @@ function TestPlayerConnect2:start(writeTextFunc)
   end
 
   self.ctx.sessions[1].onPlayerDisconnectCB = function(peerId)
+	print("ctx.sessions[1].onPlayerDisconnectCB " .. peerId)
+	
     if peerId == 2 then
       cdl:signal()
       self.ctx.sessions[2]:start()
@@ -60,7 +62,7 @@ function TestPlayerConnect2:start(writeTextFunc)
     end
   end
   
-  cdl:wait(5, function(timedout)
+  cdl:wait(10, function(timedout)
     self.ctx:stop()
   
     assert(not timedout, "Peer 2 did not connect.")
