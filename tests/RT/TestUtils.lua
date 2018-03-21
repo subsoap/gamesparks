@@ -116,7 +116,7 @@ end
 function TestUtils.encryptToken(token, base64EncodedSecret)
   local secret = mime.unb64(base64EncodedSecret)
   
-  return mime.b64(crypto2.encrypt(token, secret))
+  return mime.b64(crypto.encrypt(token, secret))
 end
 
 function TestUtils.contains(table, item)
