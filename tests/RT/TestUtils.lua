@@ -1,5 +1,5 @@
 local customjson = require("gamesparks.dmc_corona.lib.dmc_lua.json")
-local crypto2 = require("crypto2.crypto2")
+local crypto = require("crypto.crypto")
 local TestSession = require("tests.RT.TestSession")
 
 TestUtils = {}
